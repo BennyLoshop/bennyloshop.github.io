@@ -243,8 +243,7 @@
     <script>
         $("form .dropdown-item").click(function(){$(searchE).text($(this).text()), searcher.action=$(this).data("url"), searchKeys.placeholder=$(this).data("text"), searchKeys.name=$(this).data("var")})
         if (window.location.protocol === "https:"){
-            window.location.protocol = "http:";
-            window.location.reload();
+            window.location.replace("http://zytb.loshop.com.cn");
         }
     </script>
 
