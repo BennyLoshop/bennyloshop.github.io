@@ -14,223 +14,592 @@
 </head>
 
 <body>
-    <div id="bg" style="z-index:-1;filter:brightness(60%);position:fixed;top:0;left:0;width:100%;height:100%;background: center url(https://t.mwm.moe/pc);background-size:cover"></div>
+<div class="ball">
+    <p>正在渲染</p>
+    <div class="ball1"></div>
+    <div class="ball2"></div>
+    <div class="ball3"></div>
+</div>
 
-    
-  
+<style>
+    /*css document*/
+    * { /*清除页面中默认的内外边距*/
+        padding: 0;
+        margin: 0;
+    }
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#Login">登录</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#Note" onclick="noteGetAll()">云笔记</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#ZXZL">在线专栏</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#Mistake" onclick="mistakeInit()">错题本</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#question" onclick="quoraInit()">随身答</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#Update">说明&致谢</a>
-        </li>
-    </ul>
-    <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade active show" id="Login">
-            <div class="container">
-                <div class="row mt-5">
-                    <div class="login col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h4>登录</h4>
-                            </div>
-                            <form class="needs-validation" novalidate="">
-                                <div class="card-body" >
-                                    <h1 id="welc"></h1>
-                                    <div class="form-group mb-3">
-                                        <label for="account">用户名</label>
-                                        <input id="account" type="text" class="form-control" autofocus="" placeholder="输入用户名">
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                    <div class="form-group mb-5">
-                                        <label for="password" class="control-label">密码</label>
-                                        <input id="password" type="password" class="form-control" placeholder="输入密码">
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                    <div class="login-bottom form-group mb-3">
-                                        <button id="login_btn" type="button" class="btn btn-primary form-control">登录</button>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
+    .ball { /*设置动画盒子的整体样式*/
+        width: 240px; /*设置整体大小*/
+        height: 120px;
+        text-align: center; /*设置对齐方式*/
+        color: #fff; /*设置文字颜色*/
+        background: rgba(0, 0, 0, 0.5); /*设置背景颜色*/
+        margin: 20px auto;
+    }
+
+    .ball > p { /*设置加载的提示文字的样式*/
+        padding: 20px 0;
+    }
+
+    .ball > div { /*设置动画中三个小球的样式*/
+        width: 18px; /*设置大小*/
+        height: 18px;
+        background: #1abc9c; /*设置背景颜色*/
+        border-radius: 100%; /*设置圆角边框*/
+        display: inline-block; /*设置其显示方式*/
+        animation: move 1.4s infinite ease-in-out both; /*添加动画*/
+    }
+
+    .ball .ball1 { /*设置第一个小球的动画延迟*/
+        animation-delay: 0.16s;
+    }
+
+    .ball .ball2 { /*设置第二个小球的动画延迟*/
+        animation-delay: 0.32s;
+    }
+
+    .ball .ball3 { /*设置第二个小球的动画延迟*/
+        animation-delay: 0.48s;
+    }
+
+    @keyframes move { /*创建动画*/
+        0% {
+            transform: scale(0)
+        }
+        40% {
+            transform: scale(1.0)
+        }
+        100% {
+            transform: scale(0)
+        }
+    }
+
+    .ball {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+</style>
+<script>
+    $(".ball").fadeOut(5);
+</script>
+<div id="bg"
+     style="z-index:-1;filter:brightness(60%);position:fixed;top:0;left:0;width:100%;height:100%;background: center url(/bg3.jpg);background-size:cover"></div>
+
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#Login">登录</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#Note" onclick="noteGetAll()">云笔记</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#ZXZL">在线专栏</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#Mistake" onclick="mistakeInit()">错题本</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#question" onclick="quoraInit()">随身答</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#apps">下载应用</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#lesson2" onclick="show_lesson()">优客畅学</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#advance" onclick="reload_token()">高级选项</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#Update">说明&致谢</a>
+    </li>
+</ul>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">镜像站列表</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            为防止本站服务器故障，本站共有3个镜像站。
+        </div>
+        <p></p>
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" href="http://zytb.loshop.com.cn">主站</a>
+            <a class="list-group-item list-group-item-action" href="http://gh.zytb.loshop.com.cn">Github Pages</a>
+            <a class="list-group-item list-group-item-action" href="http://gl.zytb.loshop.com.cn">Gitlab Pages</a>
+        </div>
+    </div>
+</div>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active show" id="Login">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="login col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h4>登录</h4>
+                        </div>
+                        <form class="needs-validation" novalidate="">
+                            <div class="card-body">
+                                <h1 id="welc"></h1>
+                                <div class="form-group mb-3">
+                                    <label for="account">用户名</label>
+                                    <input id="account" type="text" class="form-control" autofocus=""
+                                           placeholder="输入用户名">
+                                    <div class="invalid-feedback"></div>
                                 </div>
-                            </form>
-                            <div class="container">
-                                <h4>说明：</h4>
-                                <p>
-                                    本页面用于下载中育上的笔记，仅供学习交流使用。
-                                    <br>
-                                    开发：
-                                    Loshop
-                                    
-                                    
-                                    <br>
-                                    如遇问题请及时联系
-                                </p>
+                                <div class="form-group mb-5">
+                                    <label for="password" class="control-label">密码</label>
+                                    <input id="password" type="password" class="form-control" placeholder="输入密码">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="login-bottom form-group mb-3">
+                                    <button id="login_btn" type="button" class="btn btn-primary form-control">登录
+                                    </button>
+                                    <div class="invalid-feedback"></div>
+                                </div>
                             </div>
+                        </form>
+                        <div class="container">
+                            <h4>说明：</h4>
+                            <p>
+                                本工具用于快捷查看中育账号资源，与中育智慧（无锡）数字技术有限公司及其关联公司无关
+                                <br>
+                                开发：
+                                Loshop
+
+
+                                <br>
+                                如遇问题请及时联系
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="Note">
-            <div class="container">
-                <div class="d-flex flex-column align-items-stretch flex-shrink-0 mt-5" style="width: 100%;background:rgba(255,255,255,0.8) !important;">
-                    <a class="justify-content-between d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom" style="background:rgba(255,255,255,0.9) !important;">
-                        <div> <img src="./download.png" width="24" height="24">
-                            <use xlink:href="#bootstrap">
-                                <span class="fs-5 fw-semibold">云笔记（点击下载）</span>
-                            </use>
-                        </div>
-                        <div class="input-group mb-1" style="width:50%">
-                            <input id="note_search" type="text" class="form-control" placeholder="搜索笔记" aria-label="Recipient's username" aria-describedby="button-addon2" onkeyup='$(".a-note").each(function(){if($(this).find(".note-name").text().indexOf(note_search.value)==-1)$(this).addClass("d-none");else $(this).removeClass("d-none")})'>
-                        </div>
-                    </a>
-                    <div id="noteList" class="list-group border-bottom scrollarea" style="background:rgba(255,255,255,0) !important;"></div>
+    </div>
+    <div class="tab-pane fade" id="Note">
+        <div class="container">
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 mt-5"
+                 style="width: 100%;background:rgba(255,255,255,0.8) !important;">
+                <a class="justify-content-between d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom"
+                   style="background:rgba(255,255,255,0.9) !important;">
+                    <div><img src="./download.png" width="24" height="24">
+                        <use xlink:href="#bootstrap">
+                            <span class="fs-5 fw-semibold">云笔记（点击下载）</span>
+                        </use>
+                    </div>
+                    <div class="input-group mb-1" style="width:50%">
+                        <input id="note_search" type="text" class="form-control" placeholder="搜索笔记"
+                               aria-label="Recipient's username" aria-describedby="button-addon2"
+                               onkeyup='$(".a-note").each(function(){if($(this).find(".note-name").text().indexOf(note_search.value)==-1)$(this).addClass("d-none");else $(this).removeClass("d-none")})'>
+                    </div>
+                </a>
+                <div id="noteList" class="list-group border-bottom scrollarea"
+                     style="background:rgba(255,255,255,0) !important;"></div>
+            </div>
+        </div>
+
+        <!-- Button trigger modal -->
+        <input id="showAlert" type="button" class="d-none btn btn-primary" data-bs-toggle="modal"
+               data-bs-target="#downloadModal">
+        <!-- Modal -->
+        <div class="modal fade" id="downloadModal" tabindex="-1" data-bs-backdrop="static"
+             aria-labelledby="downloadModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="downloadModalLabel">提示</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="download_msg" class="modal-body">
+                        服务器正在获取图片列表...
+                    </div>
+                    <div class="modal-footer">
+                        <button id="download_button" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                disabled="disable">确认
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="ZXZL">
+        <div class="container mt-5">
+            <button id="zxzl_login" class="btn btn-primary btn-lg align-items-center mx-auto col-3">点我登录在线专栏
+            </button>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="Mistake">
+        <div class="container mt-5">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">学科</label>
+                <select id="mistake_subject" class="form-select">
+                    <option value="-1">请选择</option>
+                </select>
+                <button id="mistake_query" class="btn btn-info" type="button">确认</button>
+            </div>
+            <table class="table table-hover" style="background:rgba(255,255,255,0.8) !important;">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-secondary">#</th>
+                    <th scope="col" class="text-secondary">题目名称</th>
+                    <th scope="col" class="text-secondary">快照</th>
+                    <th scope="col" class="text-secondary">更新时间</th>
+                </tr>
+                </thead>
+                <tbody id="mistake_list">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="question">
+        <div class="container mt-5">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">学科</label>
+                <select id="ques_subject" class="form-select" id="inputGroupSelect01">
+                    <option value="-1">请选择</option>
+                </select>
+                <label class="input-group-text" for="inputGroupSelect01">分类</label>
+                <select id="ques_topic" class="form-select" id="inputGroupSelect01">
+                    <option value="-1">请选择</option>
+                </select>
+                <button id="ques_query" class="btn btn-secondary" type="button">确认</button>
+            </div>
+            <table class="table table-hover" style="background:rgba(255,255,255,0.8) !important;">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-secondary">#</th>
+                    <th scope="col" class="text-secondary">提问者</th>
+                    <th scope="col" class="text-secondary">标题</th>
+                    <th scope="col" class="text-secondary">更新时间</th>
+                </tr>
+                </thead>
+                <tbody id="ques_list">
+                </tbody>
+            </table>
 
-            <!-- Button trigger modal -->
-            <input id="showAlert" type="button" class="d-none btn btn-primary" data-bs-toggle="modal" data-bs-target="#downloadModal">
-            <!-- Modal -->
-            <div class="modal fade" id="downloadModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="downloadModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+            <input id="ques_preview" type="button" class="d-none btn btn-primary" data-bs-toggle="modal"
+                   data-bs-target="#preview">
+            <div class="modal fade" id="preview" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="downloadModalLabel">提示</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="previewModalLabel">预览</h5>
+                            <input type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div id="download_msg" class="modal-body">
-                            服务器正在获取图片列表...
-                        </div>
-                        <div class="modal-footer">
-                            <button id="download_button" type="button" class="btn btn-primary" data-bs-dismiss="modal" disabled="disable">确认</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="ZXZL">
-            <div class="container mt-5">
-                <button id="zxzl_login" class="btn btn-primary btn-lg align-items-center mx-auto col-3">点我登录在线专栏</button>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="Mistake">
-            <div class="container mt-5">
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">学科</label>
-                    <select id="mistake_subject" class="form-select">
-                    <option value="-1">请选择</option>
-                </select>
-                    <button id="mistake_query" class="btn btn-info" type="button">确认</button>
-                </div>
-                    <table class="table table-hover" style="background:rgba(255,255,255,0.8) !important;">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-secondary">#</th>
-                            <th scope="col" class="text-secondary">题目名称</th>
-                            <th scope="col" class="text-secondary">快照</th>
-                            <th scope="col" class="text-secondary">更新时间</th>
-                        </tr>
-                    </thead>
-                    <tbody id="mistake_list">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="question">
-            <div class="container mt-5">
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">学科</label>
-                    <select id="ques_subject" class="form-select" id="inputGroupSelect01">
-                    <option value="-1">请选择</option>
-                </select>
-                    <label class="input-group-text" for="inputGroupSelect01">分类</label>
-                    <select id="ques_topic" class="form-select" id="inputGroupSelect01">
-                    <option value="-1">请选择</option>
-                </select>
-                    <button id="ques_query" class="btn btn-secondary" type="button">确认</button>
-                </div>
-                <table class="table table-hover" style="background:rgba(255,255,255,0.8) !important;">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-secondary">#</th>
-                            <th scope="col" class="text-secondary">提问者</th>
-                            <th scope="col" class="text-secondary">标题</th>
-                            <th scope="col" class="text-secondary">更新时间</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ques_list">
-                    </tbody>
-                </table>
+                        <div id="ques_preview_body" class="modal-body">
 
-                <input id="ques_preview" type="button" class="d-none btn btn-primary" data-bs-toggle="modal" data-bs-target="#preview">
-                <div class="modal fade" id="preview" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="previewModalLabel">预览</h5>
-                                <input type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div id="ques_preview_body" class="modal-body">
-
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                                <input id="ques_download" type="button" class="btn btn-secondary" style="float:left" value="下载">
-                                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="关闭">
-                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <input id="ques_download" type="button" class="btn btn-secondary" style="float:left"
+                                   value="下载">
+                            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="关闭">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="tab-pane fade" id="Update">
-            <div class="container mt-5">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 21%;"></div>
+    </div>
+    <div class="tab-pane fade" id="apps">
+        <div class="container mt-5">
+
+            <div class="list-group mt-3 " style="background:rgba(255,255,255,0.8)">
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <h4 class="alert-heading">警告</h4>
+                    <p class="mb-0">未经授权在其他设备登录您的账号可能会导致账号被封禁</p>
                 </div>
-                <div class="list-group mt-3 " style="background:rgba(255,255,255,0.8)">
-                    <div class="container mt-3 mb-3">
-                        <h1 class="text-primary">使用说明</h1>
-                        <div class="container mt-3">
-                            <h3 class="text-primary">云笔记</h3>
-                            <ul>
-                                <li>搜素想要下载原图的笔记名称，点击即可下载图片压缩包</li>
-                            </ul>
-                            <h3 class="text-primary">在线专栏</h3>
-                            <ul>
-                                <li>点击按钮即可跳转在线专栏页面</li>
-                            </ul>
-                            <h3 class="text-primary">错题本</h3>
-                            <ul>
-                                <li>先选择想下载的错题学科合集，然后找到对应的错题，点击即可下载笔记的原始压缩包</li>
-                            </ul>
-                            <h3 class="text-primary">随身答</h3>
-                            <ul>
-                                <li>先选择对应的学科和分类，然后点击列表即可打开预览功能，如需下载，点击下载键即可开始下载完整图片压缩包</li>
-                            </ul>
+                <div class="container mt-3 mb-3">
+                    <h1 class="text-primary">中育APP下载</h1><span
+                        class="badge bg-danger">本页面仅提供App下载，不保证其可以在设备上运行</span>
+                    <div class="container mt-3">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">应用名称</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-primary">
+                                <th scope="row">云笔记</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_note()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_note_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">新测评</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_test()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_test_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">优客畅学</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_learn()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_learn_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">用户中心</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_user()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_user_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">错题本</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_mistake()">
+                                            下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_mistake_link()">
+                                            刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">在线专栏</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_web()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_web_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">随身答</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_chat()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="reload_chat_link()">刷新
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th scope="row">中育教师端</th>
+                                <td></td>
+                                <td>
+                                    <div style="float:right">
+                                        <button type="button" class="btn btn-success" onclick="download_chat()">下载
+                                        </button>
+                                        <button type="button" class="btn btn-info" disabled>刷新</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="container mb-3">
+                    <h1 class="text-primary">注意</h1>
+                    <div class="container mt-3">
+                        如果无法下载(apk)文件，请点击“刷新”按钮
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="advance">
+        <div class="container mt-5">
+            <div class="list-group mt-3 " style="background:rgba(255,255,255,0.8)">
+
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>警告 </strong> 本页面为高级选项，不当使用造成的损失概不负责
+                </div>
+
+                <div class="container mb-3">
+                    <p></p>
+                    <h1 class="text-primary">高级选项</h1>
+                    <div>
+                        <label class="form-label mt-4">账号Token</label>
+                        <div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Token..." value=""
+                                       aria-label="Recipient's username" aria-describedby="button-addon2" readonly=""
+                                       id="show_token">
+                                <button class="btn btn-primary" type="button" id="button-addon2"
+                                        onclick="reload_token()">刷新Token
+                                </button>
+                                <button class="btn btn-secondary" type="button" id="button-addon2"
+                                        onclick="copy_token()">复制
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="container mb-3">
-                        <h1 class="text-primary">致谢</h1>
-                        <div class="container mt-3">
-                            感谢各位的使用，我们有缘再会。
-                            <br>
-                            开发：
-                            Loshop
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-lg btn-primary" type="button" onclick="show_class()">查看课表</button>
+                        <button class="btn btn-lg btn-primary" type="button" onclick="show_online_test()">网阅联考
+                        </button>
+                    </div>
+                    <fieldset>
+                        <legend class="mt-4">开发者选项</legend>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">启用iframe预览</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled
+                                   checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">启用优客畅学</label>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="Update">
+        <div class="container mt-5">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 21%;"></div>
+            </div>
+            <div class="list-group mt-3 " style="background:rgba(255,255,255,0.8)">
+                <div class="container mt-3 mb-3">
+                    <h1 class="text-primary">使用说明</h1>
+                    <div class="container mt-3">
+                        <h3 class="text-primary">云笔记</h3>
+                        <ul>
+                            <li>搜素想要下载原图的笔记名称，点击即可下载图片压缩包</li>
+                        </ul>
+                        <h3 class="text-primary">在线专栏</h3>
+                        <ul>
+                            <li>点击按钮即可跳转在线专栏页面</li>
+                        </ul>
+                        <h3 class="text-primary">错题本</h3>
+                        <ul>
+                            <li>先选择想下载的错题学科合集，然后找到对应的错题，点击即可下载笔记的原始压缩包</li>
+                        </ul>
+                        <h3 class="text-primary">随身答</h3>
+                        <ul>
+                            <li>
+                                先选择对应的学科和分类，然后点击列表即可打开预览功能，如需下载，点击下载键即可开始下载完整图片压缩包
+                            </li>
+                        </ul>
+                        <h3 class="text-primary">应用下载</h3>
+                        <ul>
+                            <li>
+                                选择对应链接下载
+                            </li>
+                        </ul>
+                        <h3 class="text-primary">优客畅学</h3>
+                        <ul>
+                            <li>
+                                选择学科与课程后点击进入课程即可
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="container mb-3">
+                    <h1 class="text-primary">致谢</h1>
+                    <div class="container mt-3">
+                        感谢各位的使用，我们有缘再会。
+                        <br>
+                        开发：
+                        Loshop
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                           aria-controls="offcanvasExample">
+                            镜像站列表
+                        </a>
+                    </div>
+                </div>
+                <div class="container mb-3">
+                    <h1 class="text-primary">更新日志</h1>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    2024/10/4
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                 data-bs-parent="#accordionExample" style="">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>网站上线</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    2024/10/5
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>增加App下载功能</li>
+                                        <li>优化在线专栏启动方式</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                    2024/10/6
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>增加优客畅学课程预览</li>
+                                        <li>实现优客畅学课程爬取</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -238,56 +607,120 @@
         </div>
     </div>
 
-    <script src="./index.js"></script>
+    <div class="tab-pane fade" id="lesson2">
+        <div class="container mt-5">
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>提示</strong> 如果遇到视频无法播放或其他渲染异常请点击“手动渲染”按钮
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="id_c">科目</label>
+                <select class="form-select" id="id_c" onchange="show_class()">
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="cid_c">课程</label>
+                <select class="form-select" id="cid_c">
+                </select>
+                <button id="get_id_and_cid" class="btn btn-secondary" type="button" onclick="set_ids()">进入课程
+                </button>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="id_input" readonly="">科目ID</label>
+                <input class="form-control" id="id_input" readonly="">
+                <label class="input-group-text" for="cid_input" readonly="">课程ID</label>
+                <input class="form-control" id="cid_input" readonly="">
+                <button id="load" class="btn btn-secondary" type="button" onclick="show_page()">刷新</button>
+                <button id="reload_lesson" class="btn btn-primary" type="button" onclick="change_all()">手动渲染
+                </button>
+            </div>
+            <div class="list-group mt-3 " style="background:rgba(255,255,255,0.8)">
 
-    <script>
-        $("form .dropdown-item").click(function(){$(searchE).text($(this).text()), searcher.action=$(this).data("url"), searchKeys.placeholder=$(this).data("text"), searchKeys.name=$(this).data("var")})
-        if (window.location.protocol === "https:"){
-            window.location.replace("http://zytb.loshop.com.cn");
-        }
-    </script>
 
-    <style>
-        .hub {
-            font-family: sans-serif;
-            font-weight: bold;
-        }
-        
-        .hub span:nth-child(2) {
-            background: #FF9900;
-            color: #000000;
-            border-radius: 1vw;
-            padding: 3% 7%;
-            display: inline-block;
-        }
-        
-        small:hover {
-            cursor: pointer;
-        }
-        
-        .snap {
-            height: 5vh;
-        }
-        
-        tbody,
-        td,
-        tfoot,
-        th,
-        thead,
-        tr,
-        .list-group-item {
-            transition: 0.3s;
-        }
-        
-        .avatar {
-            width: 1.3em;
-            margin-right: 5px;
-            margin-bottom: 2px;
-        }
-        .table-light {
-            background-color: rgba(255,255,255,0.8) !important;
-        }
-    </style>
+                <div class="container mb-3">
+                    <p></p>
+                    <div id="show"></div>
+
+                </div>
+            </div>
+
+            <input id="ques_preview" type="button" class="d-none btn btn-primary" data-bs-toggle="modal"
+                   data-bs-target="#preview">
+            <div class="modal fade" id="preview" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="previewModalLabel">预览</h5>
+                            <input type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="ques_preview_body" class="modal-body">
+
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <input id="ques_download" type="button" class="btn btn-secondary" style="float:left"
+                                   value="下载">
+                            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="关闭">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div
+</div>
+
+<script src="./index.js"></script>
+
+<script>
+    $("form .dropdown-item").click(function () {
+        $(searchE).text($(this).text()), searcher.action = $(this).data("url"), searchKeys.placeholder = $(this).data("text"), searchKeys.name = $(this).data("var")
+    })
+    if (window.location.protocol === "https:") {
+        window.location.replace("http://zytb.loshop.com.cn");
+    }
+</script>
+
+<style>
+    .hub {
+        font-family: sans-serif;
+        font-weight: bold;
+    }
+
+    .hub span:nth-child(2) {
+        background: #FF9900;
+        color: #000000;
+        border-radius: 1vw;
+        padding: 3% 7%;
+        display: inline-block;
+    }
+
+    small:hover {
+        cursor: pointer;
+    }
+
+    .snap {
+        height: 5vh;
+    }
+
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr,
+    .list-group-item {
+        transition: 0.3s;
+    }
+
+    .avatar {
+        width: 1.3em;
+        margin-right: 5px;
+        margin-bottom: 2px;
+    }
+
+    .table-light {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+    }
+</style>
 </body>
 
 </html>

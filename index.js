@@ -89,25 +89,25 @@
     })
 };*/
 
-ques_query.onclick = async function() {
+ques_query.onclick = async function () {
     var topic = $(ques_topic).val(),
         subject = $(ques_subject).val();
     if (topic == '-1 ' || subject == '-1 ') return;
 
     let data = await fetch(`http://sxz.api.zykj.org/api/services/app/Quora/GetSessions`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({
-                "catalogId": topic,
-                "orderBy": 0,
-                "skip": 0,
-                "take": 1000,
-                "topicId": subject
-            })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+            "catalogId": topic,
+            "orderBy": 0,
+            "skip": 0,
+            "take": 1000,
+            "topicId": subject
         })
+    })
         .then(response => response.json());
     data = data.result;
 
@@ -115,27 +115,27 @@ ques_query.onclick = async function() {
     for (i in data) {
         var tb = $(`<tr class="table" background-color: rgba(255,255,255,0.8) !important;>
                     <th scope="row">${Number(i) + 1}</th>
-                    <td><img src="${data[i].askUserPhoto||"https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png"}" class="avatar">${data[i].askUserName}</td>
+                    <td><img src="${data[i].askUserPhoto || "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png"}" class="avatar">${data[i].askUserName}</td>
                     <td>${data[i].summary}</td>
                     <td>${data[i].updateTime}</td>
                 </tr>`)
         tb.data("snap", data[i].snapshot);
         tb.data("id", data[i].id);
-        tb.click(async function() {
+        tb.click(async function () {
             ques_focus = this;
             var s = "";
             let data = await fetch(`http://sxz.api.zykj.org/api/services/app/Quora/GetMessages`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    body: JSON.stringify({
-                        "SessionId": $(this).data("id"),
-                        "Skip": 0,
-                        "Take": 1000
-                    })
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({
+                    "SessionId": $(this).data("id"),
+                    "Skip": 0,
+                    "Take": 1000
                 })
+            })
                 .then(response => response.json());
             data = data.result;
 
@@ -145,7 +145,7 @@ ques_query.onclick = async function() {
                     <div class="carousel-item ${i == "0" ? "active" : ""}" data-link="${data[i].content}">
                         <img src="${data[i].snapShot}" class="d-block w-100">
                         <div style="padding-bottom:0" class="carousel-caption d-none d-md-block">
-                                <p>第${Number(i)+1}/${data.length}页 发布者： ${data[i].userName}</p>
+                                <p>第${Number(i) + 1}/${data.length}页 发布者： ${data[i].userName}</p>
                         </div>
                     </div>`
             $(ques_preview_body).html(`
@@ -167,9 +167,11 @@ ques_query.onclick = async function() {
     }
 
 };
-ques_download.onclick = function() { download($('.carousel-item.active')[0].dataset.link, 'test.zip') };
+ques_download.onclick = function () {
+    download($('.carousel-item.active')[0].dataset.link, 'test.zip')
+};
 
-mistake_query.onclick = async function() {
+mistake_query.onclick = async function () {
     var subject = $(mistake_subject).val();
     let data = await fetch(`http://sxz.api.zykj.org/api/services/app/MistakeBook/SearchMistakeQstItemsAsync`, {
         method: "POST",
@@ -188,13 +190,13 @@ mistake_query.onclick = async function() {
             "tagIdList": []
         })
     })
-    .then(response => response.json());
+        .then(response => response.json());
     data = data.result;
     console.log(data);
     data = data.items;
 
     $(mistake_list).html("");
-    for (i in data){
+    for (i in data) {
         var tb = $(`<tr class="table" background-color: rgba(255,255,255,0.8) !important;>
                     <th scope="row">${Number(i) + 1}</th>
                     <td>${data[i].source}</td>
@@ -202,19 +204,19 @@ mistake_query.onclick = async function() {
                     <td>${data[i].creationTime}</td>
                 </tr>`)
         tb.data("id", data[i].id);
-        tb.click(async function() {
+        tb.click(async function () {
             let data = await fetch(`http://sxz.api.zykj.org/api/services/app/MistakeBook/GetMistakeQstItemDetailInfoAsync?itemId=` + $(this).data("id"), {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                })
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+            })
                 .then(response => response.json());
             data = data.result;
             if (!data) return;
             let noteSrc = data.note;
-            if (!noteSrc){
+            if (!noteSrc) {
                 alert("无笔记");
                 return;
             }
@@ -227,7 +229,7 @@ mistake_query.onclick = async function() {
 var downloading = 0,
     ques_focus,
     isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-(function() {
+(function () {
     var file_count = 1;
     upload_button.onclick = () => {
         var files = upload_file.files;
@@ -261,32 +263,32 @@ var downloading = 0,
     }
 })
 
-login_btn.onclick = async() => {
+login_btn.onclick = async () => {
     localStorage.clear();
     var message;
     let data = await fetch("http://sxz.api.zykj.org/api/TokenAuth/Login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "userName": account.value,
-                "password": password.value,
-                "clientType": 1
-            })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "userName": account.value,
+            "password": password.value,
+            "clientType": 1
         })
+    })
         .then(response => response.json());
     if (!data.result)
         message = data.error.message;
     else {
         let token = data.result.accessToken,
             info = await (fetch("http://sxz.api.zykj.org/api/services/app/User/GetInfoAsync", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
-                })
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
                 .then(response => response.json()));
         info = info.result, info["token"] = token;
         if (!info.photo)
@@ -335,7 +337,7 @@ async function noteDownload(fileId, name) {
     if (this.downloading) return;
     this.downloading = 1;
 
-    let response = await fetch(`http://sxz.api.zykj.org/CloudNotes/api/Resources/GetByFileId?${aesEncrypt("fileId="+fileId)}`, {
+    let response = await fetch(`http://sxz.api.zykj.org/CloudNotes/api/Resources/GetByFileId?${aesEncrypt("fileId=" + fileId)}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -361,11 +363,13 @@ async function noteDownload(fileId, name) {
                 .then(response => response.blob())
             if (!count[list[i].pageIndex])
                 count[list[i].pageIndex] = 1;
-            zip.file(`${list[i].pageIndex+1}-${list[i].resourceType == 2?"thumbnail":count[list[i].pageIndex]++}.jpg`, image);
+            zip.file(`${list[i].pageIndex + 1}-${list[i].resourceType == 2 ? "thumbnail" : count[list[i].pageIndex]++}.jpg`, image);
         }
     }
 
-    zip.generateAsync({ type: "blob" }).then(function(content) {
+    zip.generateAsync({
+        type: "blob"
+    }).then(function (content) {
         $(download_msg).text("获取完毕，下载启动...");
         download_button.disabled = "";
         download(URL.createObjectURL(content), name + '.zip')
@@ -406,7 +410,7 @@ async function quoraInit() {
     }
 }
 
-async function mistakeInit(){
+async function mistakeInit() {
     let data = await fetch(`http://sxz.api.zykj.org/api/services/app/MistakeBook/GetMyMistakeBooksAsync`, {
         method: "GET",
         headers: {
@@ -421,6 +425,402 @@ async function mistakeInit(){
     }
 }
 
-zxzl_login.onclick = async() => {
-    window.open("http:\/\/sxz.school.zykj.org/navPage.html?apiHost=http:\/\/sxz.api.zykj.org&apiToken="+localStorage.getItem("token")+"#\/list");
+zxzl_login.onclick = async () => {
+    window.open("http:\/\/sxz.school.zykj.org/navPage.html?apiHost=http:\/\/sxz.api.zykj.org&apiToken=" + localStorage.getItem("token") + "#\/list");
+}
+
+var note_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/云笔记_master_20240513.01_1938_1.9.38.apk";
+var test_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/新测评_master_20240304.01_release_215_2.1.5.apk";
+var learn_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/云笔记_master_20240513.01_1938_1.9.38.apk";
+var user_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/用户中心_master_20240426.01_release_40_2.0.15.apk";
+var mistake_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/错题本_master_20240326.01_57_1.0.57.apk";
+var web_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/浏览器_master_20240221.01_1211_1.2.11.apk";
+var chat_link = "http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/随身答(学生版)_master_20240326.01_release_11_1.0.11.apk";
+
+function reload_note_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.friday.cloudsnote&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.friday.cloudsnote",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            note_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_note() {
+    window.open(note_link);
+}
+
+function reload_test_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zykj.evaluation&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zykj.evaluation",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            test_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_test() {
+    window.open(test_link);
+}
+
+function reload_learn_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zhongyukejiao.learningexpert&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zhongyukejiao.learningexpert",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            learn_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_learn() {
+    window.open(learn_link);
+}
+
+function reload_user_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zykj.manage&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zykj.manage",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            user_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_user() {
+    window.open(user_link);
+}
+
+function reload_mistake_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zykj.mistake&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zykj.mistake",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            mistake_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_mistake() {
+    window.open(mistake_link);
+}
+
+function reload_web_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zykj.subscriber&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zykj.subscriber",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            web_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_web() {
+    window.open(web_link);
+}
+
+function reload_chat_link() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/api\/services\/app\/AppStore\/CheckUpdateAsync?packageName=com.zykj.student.dialogue&version=11&appType=0',
+        type: 'get',
+        // 设置的是请求参数
+        data: {
+            packageName: "com.zykj.student.dialogue",
+            version: 11,
+            appType: 0
+        },
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.result.fileUrl);
+            chat_link = res.result.fileUrl;
+        }
+    });
+
+}
+
+function download_chat() {
+    window.open(chat_link);
+}
+
+function download_chat() {
+    window.open("http:\/\/ezy-sxz.oss-cn-hangzhou.aliyuncs.com\/1\/appstore\/%E4%B8%AD%E8%82%B2%E6%95%99%E5%B8%88%E7%AB%AF_master_20240513.02_38_1.1.27.apk");
+}
+
+async function reload_all() {
+    reload_test_link();
+    reload_chat_link();
+    reload_learn_link();
+    reload_web_link();
+    reload_mistake_link();
+    reload_note_link();
+    reload_user_link();
+}
+
+function reload_token() {
+    $("#show_token").attr("value", localStorage.getItem("token"));
+}
+
+function show_class() {
+    window.open("http:\/\/sxz.school.zykj.org/navPage.html?apiHost=http:\/\/sxz.api.zykj.org&apiToken=" + localStorage.getItem("token") + "#\/class");
+}
+
+function show_online_test() {
+    window.open("https:\/\/m.dongni100.com\/system\/login?redirectUrl=%2F");
+}
+
+function copy_token() {
+    const inputElement = document.querySelector('#show_token');
+    inputElement.select();
+    document.execCommand('copy');
+}
+
+function change_object() {
+    var leng = 1;
+    while (leng > 0) {
+        var ob = document.getElementsByTagName("object");
+        leng = ob.length;
+        for (i = 0; i < ob.length; i++) {
+            var name = ob[i].name;
+            var link = ob[i].data;
+            ob[i].remove();
+            var div = document.getElementById('show');
+            div.innerHTML += '<video src="' + link + '" type="video/mp4"  width="100%" controls="controls" loop="-1">';
+            console.log(name);
+            console.log(link);
+        }
+    }
+}
+
+function change_video() {
+    var ob = document.getElementsByTagName("video");
+    for (i = 0; i < ob.length; i++) {
+        if (ob[i].hasAttribute('controls')) {
+            console.log("Pass");
+        } else {
+            var name = ob[i].src;
+            var link = ob[i].src;
+            ob[i].remove();
+            var div = document.getElementById('show');
+            div.innerHTML += '<video src="' + link + '" type="video/mp4"  width="100%" controls="controls" loop="-1">';
+            div.innerHTML += '<p>' + link + '</p>';
+            console.log(name);
+            console.log(link);
+        }
+
+    }
+
+}
+
+function change_div() {
+    var ob = document.getElementsByTagName("div");
+    for (i = 0; i < ob.length; i++) {
+        if (ob[i].hasAttribute("data-type")) {
+            if (ob[i].getAttribute("data-type") == "ppt") {
+                var name = ob[i].getAttribute("data-name");
+                var link = ob[i].getAttribute("data-url");
+                ob[i].remove();
+                var div = document.getElementById('show');
+                div.innerHTML += '<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=' + link + '" width="100%" height="600"></iframe>';
+                div.innerHTML += '<p>' + name + ' 下载链接：' + link + '</p>';
+                console.log(name);
+                console.log(link);
+            }
+            if (ob[i].getAttribute("data-type") == "pdf") {
+                var name = ob[i].getAttribute("data-name");
+                var link = ob[i].getAttribute("data-url");
+                ob[i].remove();
+                var div = document.getElementById('show');
+                div.innerHTML += '<embed src="' + link + '" width="100%" height="1000" type="application/pdf">';
+                div.innerHTML += '<p>' + name + ' 下载链接：' + link + '</p>';
+                console.log(name);
+                console.log(link);
+            }
+
+        }
+    }
+}
+
+
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+async function change_all() {
+    $(".ball").fadeIn(500);
+    change_object();
+    await sleep(100);
+    change_video();
+    await sleep(100);
+    for (i = 1; i < 20; i++) {
+        change_div();
+        await sleep(50);
+    }//无动画效果の滚动到顶部 也可解决ios调用键盘之后的空白问题
+    window.scroll(0, 0);
+//有动画效果の滚动到顶部
+    $("html,body").animate({
+        scrollTop: 0
+    }, 500);
+    await sleep(50);
+    //无动画效果の滚动到顶部 也可解决ios调用键盘之后的空白问题
+    window.scroll(0, 0);
+//有动画效果の滚动到顶部
+    $("html,body").animate({
+        scrollTop: 0
+    }, 500);
+    $(".ball").fadeOut(500);
+
+}
+
+function show_page() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/SelfStudy\/api\/learn\/readContent?catalogId=' + $('#cid_input').val() + '&courseId=' + $('#id_input').val(),
+        type: 'get',
+        // 设置的是请求参数
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        beforeSend: function (request) {
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("token"));
+        },
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            //console.log(res.data.content);
+            var div = document.getElementById('show');
+            div.replaceChildren();
+            div.innerHTML += res.data.content
+            change_all();
+        }
+    });
+}
+
+function show_lesson() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/SelfStudy\/api\/Learn\/LearningCourses',
+        type: 'get',
+        // 设置的是请求参数
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        beforeSend: function (request) {
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("token"));
+        },
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            console.log(res.data);
+            $("#id_c").find("option").remove();
+            for (i = 0; i < res.data.length; i++) {
+                console.log(res.data[i]);
+                $('#id_c').append('<option value="' + res.data[i].id + '">' + res.data[i].title + '</option>');
+            }
+            show_class();
+        }
+    });
+}
+
+//$('#id_c').val()
+function show_class() {
+    $.ajax({
+        url: 'http:\/\/sxz.api.zykj.org\/SelfStudy\/api\/Learn\/CourseDetail?id=' + $('#id_c').val(),
+        type: 'get',
+        // 设置的是请求参数
+        dataType: 'json', // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        beforeSend: function (request) {
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("token"));
+        },
+        success: function (res) {
+            // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+            // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+            //console.log(res.data.catalogs);
+            $("#cid_c").find("option").remove();
+            for (i = 0; i < res.data.catalogs.length; i++) {
+                console.log(res.data.catalogs[i]);
+                if (res.data.catalogs[i].isLeaf) {
+                    console.log('<option value="' + res.data.catalogs[i].id + '">' + res.data.catalogs[i].title + '</option>');
+                    $('#cid_c').append('<option value="' + res.data.catalogs[i].id + '">' + res.data.catalogs[i].title + '</option>');
+                } else {
+                    for (j = 0; j < res.data.catalogs[i].children.length; j++) {
+                        console.log('<option value="' + res.data.catalogs[i].children[j].id + '">' + res.data.catalogs[i].children[j].title + '</option>');
+                        $('#cid_c').append('<option value="' + res.data.catalogs[i].children[j].id + '">' + res.data.catalogs[i].children[j].title + '</option>');
+                    }
+                }
+            }
+        }
+    });
+}
+
+function set_ids() {
+    $("#id_input").attr("value", $('#id_c').val());
+    $("#cid_input").attr("value", $('#cid_c').val());
+    show_page();
 }
